@@ -47,7 +47,15 @@
 		});
 		function onLoad(){
 			navigator.splashscreen.show();
-			document.addEventListener("deviceready", onDeviceReady, true);
+			//document.addEventListener("deviceready", onDeviceReady, true);
+			document.addEventListener("deviceready", function(){
+				//window.plugins.splashScreen.show('Default.png');
+				navigator.splashscreen.show();
+				navigator.notification.alert("PhoneGap is working!!");
+				navigator.splashscreen.show();
+				//window.plugins.splashScreen.hide();
+
+			}, false);
 		}		
 		function onDeviceReady(){ 	
 			navigator.notification.alert("PhoneGap is working!!");			
