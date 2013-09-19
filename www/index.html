@@ -1,57 +1,65 @@
+<!doctype html>
 <html>
-	<head>
-		<title>Colomer</title>
-		<meta id="extViewportMeta" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		<link rel="stylesheet" href="lib/jquery-mobile/jquery.mobile-1.3.2.css" />
-		<!-- bxSlider CSS file -->
-		<link href="css/jquery.bxslider.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/main.css" />
-	</head>
-<body onload="onLoad();">
-	<div id="menu" style="display: none; background-color:#1F1F21; min-width:540px;">
-		<img src="images/menu_head.png" />
-		<ul class="fb_menu">
-			<li class="active"><a href="#home" class="contentLink">Shop N’ Shop Denmark</a></li>
-			<li><a href="#home" class="contentLink">Shop N’ Shop Sweden</a></li>
-			<li><a href="#home" class="contentLink">The Colomer Group Website</a></li>
-		</ul>
-	</div>
-	<div data-role="page" class="pages" id="home">
-		<div data-role="header">
-			<a href="#"class="showMenu"><img src="images/menu.png" /></a>
-			<h1>Shop N’ Shop - August 2013</h1>
-		</div>
-		<!-- /header -->
-		<div data-role="content">
-			<ul class="bxslider">
-			  <li><img src="images/offers/pic1.png" /></li>
-			  <li><img src="images/offers/pic2.png" /></li>
-			  <li><img src="images/offers/pic3.png" /></li>
-			  <li><img src="images/offers/pic4.png" /></li>
-			</ul>
-		</div>
-		<!-- /content -->
-	</div>
-	<!-- /page -->
-	<script type="text/javascript" src="lib/jquery/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="phonegap.js"></script>
-	<script type="text/javascript" src="lib/jquery-mobile/jquery.mobile-1.3.2.min.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
-	<!-- bxSlider Javascript file -->
-	<script src="js/jquery.bxslider.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			$('.bxslider').bxSlider();
-		});
-		function onLoad(){
-			document.addEventListener("deviceready", onDeviceReady, true);
-		}		
-		function onDeviceReady(){ 	
-			//navigator.notification.alert("PhoneGap is working!!");
-			navigator.splashscreen.show();			 
-		}
-	</script>
-</body>
+  <head>
+    <title>Geolocation Position Example</title>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        getLatLng();
+    }
+
+    function getLatLng() {
+      var timeout = parseInt((document.getElementById('timeout')||{}).value) || 3500;
+      
+      window.watchPositionID = navigator.geolocation.watchPosition(onSuccess, onError,
+          {enableHighAccuracy: true, timeout: timeout, maximumAge: 60000 });
+          
+    }
+
+    // Display `Position` properties from the geolocation
+    //
+    function onSuccess(position) {
+        navigator.splashscreen.hide();
+
+        navigator.geolocation.clearWatch(window.watchPositionID);
+
+        window.savedPosition = position;
+
+        var div = document.getElementById('myDiv');
+
+        div.innerHTML = 'Latitude: '             + position.coords.latitude         + '<br/>' +
+                        'Longitude: '            + position.coords.longitude        + '<br/>' +
+                        'Altitude: '             + position.coords.altitude         + '<br/>' +
+                        'Accuracy: '             + position.coords.accuracy         + '<br/>' +
+                        'Altitude Accuracy: '    + position.coords.altitudeAccuracy + '<br/>' +
+                        'Heading: '              + position.coords.heading          + '<br/>' +
+                        'Speed: '                + position.coords.speed            + '<br/>';
+
+    }
+
+    // Show an alert if there is a problem getting the geolocation
+    //
+    function onError(err) {
+        // navigator.geolocation.clearWatch(window.watchPositionID);
+        navigator.splashscreen.show();
+        alert(['Error:',err.code,err.message]);
+    }
+
+    </script>
+  </head>
+  <body>
+    <h1>PhoneGap GPS Example</h1>
+    Timeout: <input id="timeout" value=4000 />
+    <button onclick="getLatLng()">Get Position</button>
+    <button onclick="navigator.splashscreen.show()">Show Splash</button>
+    
+    <div id="myDiv"></div>
+  </body>
 </html>
