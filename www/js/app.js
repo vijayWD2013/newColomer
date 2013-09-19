@@ -37,8 +37,8 @@ $(function () {
  
     // Show/hide the menu
     $("a.showMenu").click(toggle);
-    $('#menu, .pages').on("swipeleft", hide);
-    $('.pages').on("swiperight", show);
+    //$('#menu, .pages').on("swipeleft", hide);
+    //$('.pages').on("swiperight", show);
  
     $('div[data-role="page"]').on('pagebeforeshow', function (event, ui) {
         menuStatus = false;
